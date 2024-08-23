@@ -1,0 +1,28 @@
+services:  
+  ollama:
+    container_name: ollama
+    image: ollama/ollama
+    ports:
+      - "11434:11434"
+      - "4000:4000"
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - capabilities: ["gpu"]
+    volumes:
+      - ollama:/root/.ollama
+      - ./localModels:/localModels
+    restart: unless-stopped
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: ngrok
+    network_mode: host
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    command: http --domain=${NGROK_DOMAIN} --host-header="localhost:11434" 11434
+    restart: unless-stopped
+
+volumes:
+    ollama:
