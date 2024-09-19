@@ -2,6 +2,7 @@ services:
   ollama:
     container_name: ollama
     image: ollama/ollama
+    pull_policy: always
     ports:
       - "11434:11434"
       - "4000:4000"
@@ -17,6 +18,7 @@ services:
 
   ngrok:
     image: ngrok/ngrok:latest
+    pull_policy: always
     container_name: ngrok
     network_mode: host
     environment:
