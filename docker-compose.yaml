@@ -6,14 +6,19 @@ services:
     ports:
       - "11434:11434"
       - "4000:4000"
+        #    environment:
+        #      - OLLAMA_KEEP_ALIVE=1h
     deploy:
       resources:
         reservations:
           devices:
-          - capabilities: ["gpu"]
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]    
     volumes:
       - ollama:/root/.ollama
       - ./localModels:/localModels
+      - /home/manoj/Github/UnSlothFineTune:/models
     restart: unless-stopped
 
   ngrok:
